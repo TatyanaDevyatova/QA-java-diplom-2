@@ -4,6 +4,7 @@ import clients.UserClient;
 import com.github.javafaker.Faker;
 import dtos.UserDto;
 import generators.DataGenerator;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,12 +18,11 @@ import static org.junit.Assert.assertFalse;
 @RunWith(Parameterized.class)
 public class RegisterUserParametrizedTest {
     private UserClient userClient;
-    private UserDto userDto;
-    private String email;
-    private String password;
-    private String name;
-    private int expectedStatusCode;
-    private String expectedMessage;
+    private final String email;
+    private final String password;
+    private final String name;
+    private final int expectedStatusCode;
+    private final String expectedMessage;
 
     static int failedStatusCode = SC_FORBIDDEN;
     static String failedMessage = "Email, password and name are required fields";
@@ -54,9 +54,10 @@ public class RegisterUserParametrizedTest {
     }
 
     @Test
+    @DisplayName("user registration with incomplete data")
     public void registerUserWithIncompleteDataReturnsError() {
         // Arrange
-        userDto = DataGenerator.generateUserDto(email, password, name);
+        UserDto userDto = DataGenerator.generateUserDto(email, password, name);
 
         // Act
         ValidatableResponse registerResponse = userClient.register(userDto);

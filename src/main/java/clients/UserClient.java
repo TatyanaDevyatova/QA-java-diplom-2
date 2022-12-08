@@ -5,7 +5,6 @@ import dtos.UserDataDto;
 import dtos.UserDto;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
-import org.junit.BeforeClass;
 
 import static io.restassured.RestAssured.given;
 
@@ -15,7 +14,7 @@ public class UserClient extends Client {
     private static final String DATA_PATH = "/api/auth/user";
     private static final String DELETE_PATH = "/api/auth/user";
 
-    @Step("boria")
+    @Step("user registration")
     public ValidatableResponse register(UserDto userDto) {
         return given()
                 .spec(getSpec())
@@ -25,6 +24,7 @@ public class UserClient extends Client {
                 .then();
     }
 
+    @Step("user authorization")
     public ValidatableResponse login(CredentialsDto credentialsDto) {
         return given()
                 .spec(getSpec())
@@ -34,8 +34,9 @@ public class UserClient extends Client {
                 .then();
     }
 
-    public ValidatableResponse login(String login, String password) {
-        CredentialsDto credentialsDto = new CredentialsDto(login, password);
+    @Step("user authorization")
+    public ValidatableResponse login(String email, String password) {
+        CredentialsDto credentialsDto = new CredentialsDto(email, password);
         return given()
                 .spec(getSpec())
                 .body(credentialsDto)
@@ -44,27 +45,31 @@ public class UserClient extends Client {
                 .then();
     }
 
+    @Step("getting user data")
     public ValidatableResponse getData(String accessToken) {
         return given()
                 .spec(getSpec())
-                .auth().oauth2(accessToken)
-//                .body(accessToken)
-                .when()
+                .headers("authorization", accessToken)
+                .when().log().all()
                 .get(DATA_PATH)
-                .then();
+                .then().log().all();
     }
 
-    public ValidatableResponse patchData(UserDataDto userDataDto) {
+    @Step("changing user data")
+    public ValidatableResponse patchData(String accessToken, String email, String name) {
+        UserDataDto userDataDto = new UserDataDto(accessToken, email, name);
         return given()
                 .spec(getSpec())
+                .headers("authorization", accessToken)
                 .body(userDataDto)
                 .when()
                 .patch(DATA_PATH)
                 .then();
     }
 
-    public ValidatableResponse delete(String accessToken) {
-        return given()
+    @Step("deleting user")
+    public void delete(String accessToken) {
+        given()
                 .spec(getSpec())
                 .headers("authorization", accessToken)
                 .when()

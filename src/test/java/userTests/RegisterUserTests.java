@@ -4,7 +4,6 @@ import clients.UserClient;
 import com.github.javafaker.Faker;
 import dtos.UserDto;
 import generators.DataGenerator;
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
@@ -44,7 +43,7 @@ public class RegisterUserTests {
     }
 
     @Test
-    @DisplayName("valera")
+    @DisplayName("registration of unique user")
     public void registerUserWithUniqueDataReturnsOk() {
         // Arrange
         Map<String, String> expectedUserData = new HashMap<>();
@@ -69,6 +68,7 @@ public class RegisterUserTests {
     }
 
     @Test
+    @DisplayName("registering user who has already been registered")
     public void registerUserWithDuplicateDataReturnsError() {
         // Arrange
         accessToken = (userClient.register(userDto)).extract().path("accessToken");
