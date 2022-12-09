@@ -18,9 +18,7 @@ import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.junit.Assert.*;
 
 public class ChangeUserDataTests {
-
     private UserClient userClient;
-    private UserDto userDto;
     private String accessToken;
 
     int successStatusCode = SC_OK;
@@ -30,22 +28,19 @@ public class ChangeUserDataTests {
     @Before
     public void setUp() {
         this.userClient = new UserClient();
-        String email = Faker.instance().internet().emailAddress();
-        String password = Faker.instance().internet().password();
-        String name = Faker.instance().name().username();
-        this.userDto = DataGenerator.generateUserDto(email, password, name);
+        UserDto userDto = DataGenerator.generateRandomUserDto();
+        this.accessToken = (userClient.registerUser(userDto)).extract().path("accessToken");
     }
 
     @After
     public void cleanUp() {
-        userClient.delete(accessToken);
+        userClient.deleteUser(accessToken);
     }
 
     @Test
     @DisplayName("changing user data with authorization")
     public void changeUserDataWithAuthorizationReturnsOk() {
         // Arrange
-        accessToken = (userClient.register(userDto)).extract().path("accessToken");
         String newEmail = Faker.instance().internet().emailAddress();
         String newName = Faker.instance().name().username();
 
@@ -54,7 +49,7 @@ public class ChangeUserDataTests {
         expectedUserData.put("name", newName);
 
         // Act
-        ValidatableResponse changeDataResponse = userClient.patchData(accessToken, newEmail, newName);
+        ValidatableResponse changeDataResponse = userClient.changeUserData(accessToken, newEmail, newName);
 
         int actualStatusCode = changeDataResponse.extract().statusCode();
         boolean isUserRegistered = changeDataResponse.extract().path("success");
@@ -69,13 +64,8 @@ public class ChangeUserDataTests {
     @Test
     @DisplayName("changing user data without authorization")
     public void changeUserDataWithoutAuthorizationReturnsError() {
-        // Arrange
-        accessToken = (userClient.register(userDto)).extract().path("accessToken");
-        String newEmail = Faker.instance().internet().emailAddress();
-        String newName = Faker.instance().name().username();
-
-        // Act
-        ValidatableResponse changeDataResponse = userClient.patchData(Faker.instance().lorem().characters(70, true, true), newEmail, newName);
+        // Arrange & Act
+        ValidatableResponse changeDataResponse = userClient.changeUserData(Faker.instance().lorem().characters(70, true, true), Faker.instance().internet().emailAddress(), Faker.instance().name().username());
         int actualStatusCode = changeDataResponse.extract().statusCode();
         boolean isUserRegistered = changeDataResponse.extract().path("success");
         String actualMessage = changeDataResponse.extract().path("message");
@@ -86,4 +76,3 @@ public class ChangeUserDataTests {
         assertEquals(failedMessage, actualMessage);
     }
 }
-

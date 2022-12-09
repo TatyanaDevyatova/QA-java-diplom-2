@@ -60,7 +60,7 @@ public class RegisterUserParametrizedTest {
         UserDto userDto = DataGenerator.generateUserDto(email, password, name);
 
         // Act
-        ValidatableResponse registerResponse = userClient.register(userDto);
+        ValidatableResponse registerResponse = userClient.registerUser(userDto);
 
         int actualStatusCode = registerResponse.extract().statusCode();
         boolean isUserRegistered = registerResponse.extract().path("success");

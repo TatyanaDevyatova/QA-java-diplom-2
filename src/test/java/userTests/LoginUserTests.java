@@ -40,21 +40,21 @@ public class LoginUserTests {
 
     @After
     public void cleanUp() {
-        userClient.delete(accessToken);
+        userClient.deleteUser(accessToken);
     }
 
     @Test
     @DisplayName("authorization of existing user")
     public void loginUserWithExistedUniqueDataReturnsOk() {
         // Arrange
-        userClient.register(userDto);
+        userClient.registerUser(userDto);
 
         Map<String, String> expectedUserData = new HashMap<>();
         expectedUserData.put("email", email);
         expectedUserData.put("name", name);
 
         // Act
-        ValidatableResponse loginResponse = userClient.login(email, password);
+        ValidatableResponse loginResponse = userClient.loginUser(email, password);
 
         int actualStatusCode = loginResponse.extract().statusCode();
         boolean isUserRegistered = loginResponse.extract().path("success");
@@ -74,10 +74,10 @@ public class LoginUserTests {
     @DisplayName("user authorization with wrong email")
     public void loginUserWithInvalidEmailReturnsError() {
         // Arrange
-        accessToken = (userClient.register(userDto)).extract().path("accessToken");
+        accessToken = (userClient.registerUser(userDto)).extract().path("accessToken");
 
         // Act
-        ValidatableResponse loginResponse = userClient.login(Faker.instance().internet().emailAddress(), password);
+        ValidatableResponse loginResponse = userClient.loginUser(Faker.instance().internet().emailAddress(), password);
         int actualStatusCode = loginResponse.extract().statusCode();
         boolean isUserRegistered = loginResponse.extract().path("success");
         String actualMessage = loginResponse.extract().path("message");
@@ -92,10 +92,10 @@ public class LoginUserTests {
     @DisplayName("user authorization with wrong password")
     public void loginUserWithInvalidPasswordReturnsError() {
         // Arrange
-        accessToken = (userClient.register(userDto)).extract().path("accessToken");
+        accessToken = (userClient.registerUser(userDto)).extract().path("accessToken");
 
         // Act
-        ValidatableResponse loginResponse = userClient.login(email, Faker.instance().internet().password());
+        ValidatableResponse loginResponse = userClient.loginUser(email, Faker.instance().internet().password());
         int actualStatusCode = loginResponse.extract().statusCode();
         boolean isUserRegistered = loginResponse.extract().path("success");
         String actualMessage = loginResponse.extract().path("message");
@@ -110,10 +110,10 @@ public class LoginUserTests {
     @DisplayName("user authorization with non-existent data")
     public void loginUserWithNonExistedDataReturnsError() {
         // Arrange
-        accessToken = (userClient.register(userDto)).extract().path("accessToken");
+        accessToken = (userClient.registerUser(userDto)).extract().path("accessToken");
 
         // Act
-        ValidatableResponse loginResponse = userClient.login(Faker.instance().internet().emailAddress(), Faker.instance().internet().password());
+        ValidatableResponse loginResponse = userClient.loginUser(Faker.instance().internet().emailAddress(), Faker.instance().internet().password());
         int actualStatusCode = loginResponse.extract().statusCode();
         boolean isUserRegistered = loginResponse.extract().path("success");
         String actualMessage = loginResponse.extract().path("message");

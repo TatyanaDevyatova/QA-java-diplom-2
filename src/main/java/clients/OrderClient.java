@@ -7,36 +7,37 @@ import io.restassured.response.ValidatableResponse;
 import static io.restassured.RestAssured.given;
 
 public class OrderClient extends Client {
-    private static final String CREATE_PATH = "/api/orders";
-    private static final String GET_PATH = "/api/orders/all";
-    private static final String INDIVIDUAL_GET_PATH = "/api/orders?token=";
+    private static final String CREATE_ORDER_PATH = "/api/orders";
+    private static final String GET_USER_ORDERS_PATH = "/api/orders?token=";
 
-    @Step("create order")
-    public ValidatableResponse create(OrderDto orderDto) {
-
+    @Step("creating order")
+    public ValidatableResponse createOrder(String accessToken, OrderDto orderDto) {
         return given()
-                .spec(getSpec())
+                .spec(getSpecification())
+                .headers("authorization", accessToken)
                 .body(orderDto)
                 .when()
-                .post(CREATE_PATH)
+                .post(CREATE_ORDER_PATH)
                 .then();
     }
 
-    @Step("get all orders")
-    public ValidatableResponse getAll() {
+    @Step("creating order")
+    public ValidatableResponse createOrder(OrderDto orderDto) {
         return given()
-                .spec(getSpec())
+                .spec(getSpecification())
+                .body(orderDto)
                 .when()
-                .get(GET_PATH)
+                .post(CREATE_ORDER_PATH)
                 .then();
     }
 
-    @Step("get user orders")
-    public ValidatableResponse get(String accessToken) {
+    @Step("getting user orders")
+    public ValidatableResponse getUserOrders(String accessToken) {
         return given()
-                .spec(getSpec())
+                .spec(getSpecification())
+                .headers("authorization", accessToken)
                 .when()
-                .get(INDIVIDUAL_GET_PATH + accessToken)
+                .get(GET_USER_ORDERS_PATH)
                 .then();
     }
 }

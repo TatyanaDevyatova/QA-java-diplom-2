@@ -39,7 +39,7 @@ public class RegisterUserTests {
 
     @After
     public void cleanUp() {
-        userClient.delete(accessToken);
+        userClient.deleteUser(accessToken);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class RegisterUserTests {
         expectedUserData.put("name", name);
 
         // Act
-        ValidatableResponse registerResponse = userClient.register(userDto);
+        ValidatableResponse registerResponse = userClient.registerUser(userDto);
 
         int actualStatusCode = registerResponse.extract().statusCode();
         boolean isUserRegistered = registerResponse.extract().path("success");
@@ -71,10 +71,10 @@ public class RegisterUserTests {
     @DisplayName("registering user who has already been registered")
     public void registerUserWithDuplicateDataReturnsError() {
         // Arrange
-        accessToken = (userClient.register(userDto)).extract().path("accessToken");
+        accessToken = (userClient.registerUser(userDto)).extract().path("accessToken");
 
         // Act
-        ValidatableResponse registerResponse = userClient.register(userDto);
+        ValidatableResponse registerResponse = userClient.registerUser(userDto);
 
         int actualStatusCode = registerResponse.extract().statusCode();
         boolean isUserRegistered = registerResponse.extract().path("success");

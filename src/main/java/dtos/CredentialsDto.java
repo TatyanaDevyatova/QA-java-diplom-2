@@ -27,8 +27,4 @@ public class CredentialsDto {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public static CredentialsDto from(UserDto userDto) {
-        return new CredentialsDto(userDto.getEmail(), userDto.getPassword());
-    }
 }
