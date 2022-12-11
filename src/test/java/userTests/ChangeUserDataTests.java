@@ -1,4 +1,4 @@
-package userTests;
+package usertests;
 
 import clients.UserClient;
 import com.github.javafaker.Faker;

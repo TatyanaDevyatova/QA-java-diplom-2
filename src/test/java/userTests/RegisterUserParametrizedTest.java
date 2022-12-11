@@ -1,4 +1,4 @@
-package userTests;
+package usertests;
 
 import clients.UserClient;
 import com.github.javafaker.Faker;
@@ -40,7 +40,7 @@ public class RegisterUserParametrizedTest {
         userClient = new UserClient();
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тестовые данные: {0} | {1} | {2} | {3} | {4}")
     public static Object[][] getTestData() {
         return new Object[][]{
                 {Faker.instance().internet().emailAddress(), Faker.instance().internet().password(), "", failedStatusCode, failedMessage},
