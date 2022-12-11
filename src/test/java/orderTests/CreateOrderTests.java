@@ -113,7 +113,10 @@ public class CreateOrderTests {
         boolean isOrderCreated = createResponse.extract().path("success");
         List<Map<String, String>> actualIngredients = createResponse.extract().path("order.ingredients");
         int actualIngredientNumber = actualIngredients.size();
-        List<String> actualIngredientIds = actualIngredients.stream().map(x -> x.get("_id")).collect(Collectors.toList());
+        List<String> actualIngredientIds = actualIngredients
+                .stream()
+                .map(x -> x.get("_id"))
+                .collect(Collectors.toList());
         int actualNumber = createResponse.extract().path("order.number");
         int actualPrice = createResponse.extract().path("order.price");
 

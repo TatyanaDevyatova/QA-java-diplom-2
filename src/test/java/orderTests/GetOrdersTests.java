@@ -58,7 +58,10 @@ public class GetOrdersTests {
         int actualStatusCode = getResponse.extract().statusCode();
         boolean isOrderFund = getResponse.extract().path("success");
         List<Map<String, Object>> actualUserOrders = getResponse.extract().path("orders");
-        List<Integer> actualOrderNumbers = actualUserOrders.stream().map(x -> (Integer) x.get("number")).collect(Collectors.toList());
+        List<Integer> actualOrderNumbers = actualUserOrders
+                .stream()
+                .map(x -> (Integer) x.get("number"))
+                .collect(Collectors.toList());
         int actualTotal = getResponse.extract().path("total");
         int actualTotalToday = getResponse.extract().path("totalToday");
 
