@@ -21,9 +21,9 @@ public class ChangeUserDataTests {
     private UserClient userClient;
     private String accessToken;
 
-    int successStatusCode = SC_OK;
-    int failedStatusCode = SC_UNAUTHORIZED;
-    String failedMessage = "You should be authorised";
+    private final int successStatusCode = SC_OK;
+    private final int failedStatusCode = SC_UNAUTHORIZED;
+    private final String failedMessage = "You should be authorised";
 
     @Before
     public void setUp() {

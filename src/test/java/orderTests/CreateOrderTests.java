@@ -27,10 +27,10 @@ public class CreateOrderTests {
     private OrderClient orderClient;
     private OrderDto orderDto;
 
-    int successStatusCode = SC_OK;
-    int failedStatusCode = SC_BAD_REQUEST;
-    String failedMessage = "Ingredient ids must be provided";
-    int failedInvalidIngredientStatusCode = SC_INTERNAL_SERVER_ERROR;
+    private final int successStatusCode = SC_OK;
+    private final int failedStatusCode = SC_BAD_REQUEST;
+    private final String failedMessage = "Ingredient ids must be provided";
+    private final int failedInvalidIngredientStatusCode = SC_INTERNAL_SERVER_ERROR;
 
     @Before
     public void setUp() {

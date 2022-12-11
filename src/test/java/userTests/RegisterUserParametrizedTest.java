@@ -24,8 +24,8 @@ public class RegisterUserParametrizedTest {
     private final int expectedStatusCode;
     private final String expectedMessage;
 
-    static int failedStatusCode = SC_FORBIDDEN;
-    static String failedMessage = "Email, password and name are required fields";
+    private static final int failedStatusCode = SC_FORBIDDEN;
+    private static final String failedMessage = "Email, password and name are required fields";
 
     public RegisterUserParametrizedTest(String email, String password, String name, int expectedStatusCode, String expectedMessage) {
         this.email = email;

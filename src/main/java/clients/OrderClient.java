@@ -10,7 +10,7 @@ public class OrderClient extends Client {
     private static final String CREATE_ORDER_PATH = "/api/orders";
     private static final String GET_USER_ORDERS_PATH = "/api/orders?token=";
 
-    @Step("creating order")
+    @Step("creating order by authorized user")
     public ValidatableResponse createOrder(String accessToken, OrderDto orderDto) {
         return given()
                 .spec(getSpecification())
@@ -21,7 +21,7 @@ public class OrderClient extends Client {
                 .then();
     }
 
-    @Step("creating order")
+    @Step("creating order by unauthorized user")
     public ValidatableResponse createOrder(OrderDto orderDto) {
         return given()
                 .spec(getSpecification())

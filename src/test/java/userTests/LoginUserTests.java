@@ -25,9 +25,9 @@ public class LoginUserTests {
     private String password;
     private String name;
 
-    int successStatusCode = SC_OK;
-    int failedStatusCode = SC_UNAUTHORIZED;
-    String failedMessage = "email or password are incorrect";
+    private final int successStatusCode = SC_OK;
+    private final int failedStatusCode = SC_UNAUTHORIZED;
+    private final String failedMessage = "email or password are incorrect";
 
     @Before
     public void setUp() {

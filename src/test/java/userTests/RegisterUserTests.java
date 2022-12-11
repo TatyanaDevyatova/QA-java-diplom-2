@@ -24,9 +24,9 @@ public class RegisterUserTests {
     private String email;
     private String name;
 
-    int successStatusCode = SC_OK;
-    int failedStatusCode = SC_FORBIDDEN;
-    String failedMessage = "User already exists";
+    private final int successStatusCode = SC_OK;
+    private final int failedStatusCode = SC_FORBIDDEN;
+    private final String failedMessage = "User already exists";
 
     @Before
     public void setUp() {
